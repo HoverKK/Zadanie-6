@@ -3,51 +3,36 @@
 #include "DataTree.h"
 
 DataTree loadDataFromCSV(const std::string& filePath);
-
 void saveDataToBinaryFile(const std::string& binaryFilePath, const DataTree& dataTree) {
     std::ofstream binaryFile(binaryFilePath, std::ios::binary);
     if (!binaryFile.is_open()) {
         std::cerr << "Błąd: Nie można otworzyć pliku binarnego do zapisu." << std::endl;
         return;
     }
-
-   
     size_t dataSize = sizeof(DataTree);
     binaryFile.write(reinterpret_cast<const char*>(&dataSize), sizeof(size_t));
-
-   
     binaryFile.write(reinterpret_cast<const char*>(&dataTree), sizeof(DataTree));
-
     std::cout << "Dane zapisane do pliku binarnego." << std::endl;
 }
-
 DataTree loadDataFromBinaryFile(const std::string& binaryFilePath) {
     DataTree dataTree;
-
     std::ifstream binaryFile(binaryFilePath, std::ios::binary);
     if (!binaryFile.is_open()) {
         std::cerr << "Błąd: Nie można otworzyć pliku binarnego do odczytu." << std::endl;
         return dataTree;
     }
-
-    
     size_t dataSize;
     binaryFile.read(reinterpret_cast<char*>(&dataSize), sizeof(size_t));
-
-    
     if (dataSize == sizeof(DataTree)) {
         binaryFile.read(reinterpret_cast<char*>(&dataTree), sizeof(DataTree));
         std::cout << "Dane odczytane z pliku binarnego." << std::endl;
     } else {
         std::cerr << "Błąd: Nieprawidłowy rozmiar danych w pliku binarnym." << std::endl;
     }
-
     return dataTree;
 }
-
 int main() {
     DataTree dataTree;
-
     while (true) {
         std::cout << "1. Wczytaj plik CSV\n"
                   << "2. Zapisz dane do pliku binarnego\n"
@@ -59,10 +44,8 @@ int main() {
                   << "8. Wypisz sumę produkcji w danym przedziale\n"
                   << "9. Wyjście\n"
                   << "Wybierz opcję: ";
-
         int choice;
         std::cin >> choice;
-
         switch (choice) {
             case 1: {
                 std::string filePath;
@@ -142,10 +125,8 @@ int main() {
                 std::cerr << "Nieprawidłowy wybór. Spróbuj ponownie." << std::endl;
         }
     }
-
     return 0;
 }
-
 
 DataTree loadDataFromCSV(const std::string& filePath) {
     DataTree dataTree;
